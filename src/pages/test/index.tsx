@@ -128,7 +128,7 @@ function Landing() {
 									}}
 									borderRadius={"xl"}
 									minH={12}
-									placeholder="ФИО"
+									placeholder="Номер телефона"
 									bgColor={"white"}
 								></Input>
 								<Button mt={2} borderRadius={"2xl"} bgColor={"white"} w="full">
