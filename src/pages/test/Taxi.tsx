@@ -59,9 +59,34 @@ function Taxi() {
 								</Stack>
 							</Stack>
 							<Heading size={"sm"}>
-								Небольшая и очень мобильная машина.
-								<br />
-								Хватает для переезда среднего масштаба.
+								Подходит практически для любых видов городских грузоперевозок,
+								так как с лёгкостью вмещает в себя самые разнообразные предметы.
+							</Heading>
+						</Stack>
+					</Stack>
+					<Stack direction={"row"} spacing={8}>
+						<Box bgColor={"white"} borderRadius={"3xl"} p={4}>
+							<Image
+								src="/assets/images/file-630-1602583708498.png"
+								w="400px"
+							/>
+						</Box>
+						<Stack direction={"column"} spacing={4}>
+							<Stack alignItems={"center"} direction={"row"} spacing={4}>
+								<Heading>Термофургон</Heading>
+								<Stack direction={"row"} spacing={2}>
+									<Image
+										src="/assets/images/thermometer.png"
+										w="64px"
+										h="64px"
+									/>
+									<Image src="/assets/images/sprout.png" w="64px" h="64px" />
+								</Stack>
+							</Stack>
+							<Heading size={"sm"}>
+								Изотермический фургон - грузовой автомобиль, который
+								предназначается для перевозки продовольственных и
+								непродовольственных грузов.
 							</Heading>
 						</Stack>
 					</Stack>
