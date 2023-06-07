@@ -6,6 +6,8 @@ import config from "./config";
 import auth from "./lib/auth";
 import Login from "./pages/Login";
 import Main from "./pages/main";
+import Landing from "./pages/test";
+import Taxi from "./pages/test/Taxi";
 
 function App() {
 	const [authorized, setAuthorized] = useBoolean(
@@ -36,6 +38,8 @@ function App() {
 		<BrowserRouter>
 			<Routes>
 				<Route path="/" element={authorized ? <Main /> : <Login />} />
+				<Route path="/test" element={<Landing />} />
+				<Route path="/test/taxi" element={<Taxi />} />
 			</Routes>
 		</BrowserRouter>
 	);
