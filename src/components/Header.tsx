@@ -52,7 +52,7 @@ function Header() {
 						as={RLink}
 						to="/test/taxi"
 					>
-						Таксопарк
+						Автопарк
 					</Link>
 				</Stack>
 			</Stack>
