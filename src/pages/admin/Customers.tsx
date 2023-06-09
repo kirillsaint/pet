@@ -114,7 +114,10 @@ function Customers() {
 									isInvalid={errors.phone_number ? true : false}
 								>
 									<FormLabel>Номер телефона</FormLabel>
-									<Input {...register("phone_number", { required: true })} />
+									<Input
+										type="number"
+										{...register("phone_number", { required: true })}
+									/>
 									{errors.phone_number && (
 										<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
 									)}
@@ -265,7 +268,10 @@ export function TableItem({
 								isInvalid={errors.phone_number ? true : false}
 							>
 								<FormLabel>Номер телефона</FormLabel>
-								<Input {...register("phone_number", { required: true })} />
+								<Input
+									type="number"
+									{...register("phone_number", { required: true })}
+								/>
 								{errors.phone_number && (
 									<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
 								)}

@@ -158,6 +158,7 @@ function Landing() {
 									}}
 									borderRadius={"xl"}
 									minH={12}
+									type="number"
 									placeholder="Номер телефона"
 									bgColor={"white"}
 									{...register("recipient_phone_number", { required: true })}

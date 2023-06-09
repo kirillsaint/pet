@@ -52,6 +52,7 @@ function Register() {
 						value={phone_number}
 						onChange={e => setPhoneNumber(e.currentTarget.value)}
 						placeholder="Введите номер телефона"
+						type="number"
 					/>
 				</FormControl>
 				<FormControl mb={2}>
