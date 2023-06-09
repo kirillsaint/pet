@@ -24,10 +24,11 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import moment from "moment";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import config from "../../config";
 import auth from "../../lib/auth";
+import { AppContext } from "../../providers/AppContext";
 import Order from "../../types/Order";
 
 function Orders() {
@@ -53,15 +54,24 @@ function Orders() {
 	}, []);
 
 	const { isOpen, onOpen, onClose } = useDisclosure();
+	const context = useContext(AppContext);
+
+	useEffect(() => {
+		setValue("recipient_full_name", context.props.auth?.full_name || "");
+		setValue("recipient_phone_number", context.props.auth?.phone_number || "");
+	}, [context.props]);
 
 	const {
 		register,
 		handleSubmit,
 		reset,
 		formState: { errors, isSubmitting },
+		setValue,
 	} = useForm<Order>({
 		defaultValues: {
 			cargo_type_id: 0,
+			recipient_full_name: context.props.auth?.full_name,
+			recipient_phone_number: context.props.auth?.phone_number,
 		},
 	});
 	const onSubmit = handleSubmit(async data => {
@@ -237,7 +247,11 @@ export function TableItem({
 				<Td>{item.loading_address}</Td>
 				<Td>{item.unloading_address}</Td>
 				<Td>{item.cost || "Неизвестно"}</Td>
-				<Td>{item.status === "delivered" ? "Доставлен" : "В ожидании"}</Td>
+				<Td>
+					{item.status === "delivered"
+						? "Доставлен"
+						: "В ожидании " + (item.driver_id ? "доставки" : "водителя")}
+				</Td>
 			</Tr>
 
 			<Modal isOpen={isOpen} onClose={onClose}>

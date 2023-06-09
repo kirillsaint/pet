@@ -91,6 +91,7 @@ function Orders() {
 							<Th>Дата создания</Th>
 							<Th>Дата доставки</Th>
 							<Th>Цена</Th>
+							<Th>Статус</Th>
 							<Th>Действия</Th>
 						</Tr>
 					</Thead>
@@ -244,6 +245,11 @@ export function TableItem({
 					{item.delivery_date ? moment(item.delivery_date).format("LLL") : "–"}
 				</Td>
 				<Td>{item.cost}</Td>
+				<Td>
+					{item.status === "delivered"
+						? "Доставлен"
+						: "В ожидании " + (item.driver_id ? "доставки" : "водителя")}
+				</Td>
 				<Td>
 					<Stack direction={"row"} spacing={1}>
 						<IconButton onClick={onOpen} aria-label="">

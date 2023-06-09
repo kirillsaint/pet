@@ -21,7 +21,7 @@ function Admin() {
 	return (
 		<Container p={5} maxW="container.md">
 			<Heading mb={2}>Информация</Heading>
-			<Tabs isLazy variant="soft-rounded" colorScheme="red">
+			<Tabs isLazy variant="soft-rounded" colorScheme="orange">
 				<Stack direction={"row"} justifyContent={"space-between"} mb={2}>
 					<TabList>
 						<Tab>Депо</Tab>

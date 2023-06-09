@@ -1,9 +1,10 @@
-import { Box, useBoolean } from "@chakra-ui/react";
+import { Box, Stack, useBoolean } from "@chakra-ui/react";
 import axios from "axios";
 import moment from "moment";
 import "moment/locale/ru";
 import { useContext, useEffect } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import Footer from "./components/Footer";
 import Header from "./components/Header";
 import config from "./config";
 import auth from "./lib/auth";
@@ -53,33 +54,36 @@ function App() {
 
 	return (
 		<BrowserRouter>
-			<Header />
-			<Box paddingInlineStart={4} paddingInlineEnd={4} pt={32}>
-				<Routes>
-					<Route
-						path="/lk"
-						element={
-							authorized ? (
-								context.props.auth?.is_admin ? (
-									<Admin />
-								) : context.props.auth?.is_driver ? (
-									<Driver />
+			<Stack direction={"column"} justifyContent={"space-between"} minH="100vh">
+				<Header />
+				<Box paddingInlineStart={4} paddingInlineEnd={4} pt={32}>
+					<Routes>
+						<Route
+							path="/lk"
+							element={
+								authorized ? (
+									context.props.auth?.is_admin ? (
+										<Admin />
+									) : context.props.auth?.is_driver ? (
+										<Driver />
+									) : (
+										<User />
+									)
 								) : (
-									<User />
+									<Login />
 								)
-							) : (
-								<Login />
-							)
-						}
-					/>
-					<Route
-						path="/lk/register"
-						element={authorized ? <Navigate to="/lk" /> : <Register />}
-					/>
-					<Route path="/" element={<Landing />} />
-					<Route path="/taxi" element={<Taxi />} />
-				</Routes>
-			</Box>
+							}
+						/>
+						<Route
+							path="/lk/register"
+							element={authorized ? <Navigate to="/lk" /> : <Register />}
+						/>
+						<Route path="/" element={<Landing />} />
+						<Route path="/taxi" element={<Taxi />} />
+					</Routes>
+				</Box>
+				<Footer />
+			</Stack>
 		</BrowserRouter>
 	);
 }

@@ -22,16 +22,24 @@ function Header() {
 			zIndex={999}
 		>
 			<Stack h="full" alignItems={"center"} direction={"row"} spacing={8}>
-				<Stack alignItems={"center"} direction={"column"} spacing={1}>
-					<Image src="/assets/images/package.png" w={12} />
-					<Heading size={"sm"}>FASTGRUZ</Heading>
-				</Stack>
-				<Stack direction={"row"} spacing={4}>
+				<Link
+					_hover={{
+						textDecoration: "none",
+					}}
+					as={RLink}
+					to="/"
+				>
+					<Stack alignItems={"center"} direction={"column"} spacing={1}>
+						<Image src="/assets/images/package.png" w={12} />
+						<Heading size={"sm"}>FASTGRUZ</Heading>
+					</Stack>
+				</Link>
+				<Stack display={["none", "flex"]} direction={"row"} spacing={4}>
 					<Link
 						fontSize={"2xl"}
 						fontWeight={"bold"}
 						borderBottom={
-							location.pathname === "/test" ? "4px solid orange" : "none"
+							location.pathname === "/" ? "4px solid orange" : "none"
 						}
 						_hover={{
 							textDecoration: "none",
@@ -46,7 +54,7 @@ function Header() {
 						fontSize={"2xl"}
 						fontWeight={"bold"}
 						borderBottom={
-							location.pathname === "/test/taxi" ? "4px solid orange" : "none"
+							location.pathname === "/taxi" ? "4px solid orange" : "none"
 						}
 						_hover={{
 							textDecoration: "none",
