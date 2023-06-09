@@ -84,6 +84,8 @@ function Vehicles() {
 						<Th>Фирма и марка</Th>
 						<Th>Номер</Th>
 						<Th>ID Вместимости</Th>
+						<Th>ID Депо</Th>
+						<Th>ID Водителя</Th>
 						<Th>Действия</Th>
 					</Tr>
 				</Thead>
@@ -124,6 +126,26 @@ function Vehicles() {
 									{...register("capacity_id", { required: true })}
 								/>
 								{errors.capacity_id && (
+									<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
+								)}
+							</FormControl>
+							<FormControl isInvalid={errors.depo_id ? true : false}>
+								<FormLabel>ID Депо</FormLabel>
+								<Input
+									type="number"
+									{...register("depo_id", { required: true })}
+								/>
+								{errors.depo_id && (
+									<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
+								)}
+							</FormControl>
+							<FormControl isInvalid={errors.driver_id ? true : false}>
+								<FormLabel>ID Водителя</FormLabel>
+								<Input
+									type="number"
+									{...register("driver_id", { required: true })}
+								/>
+								{errors.driver_id && (
 									<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
 								)}
 							</FormControl>
@@ -189,6 +211,8 @@ export function TableItem({
 				<Td>{item.firm_mark}</Td>
 				<Td>{item.state_number}</Td>
 				<Td>{item.capacity_id}</Td>
+				<Td>{item.depo_id}</Td>
+				<Td>{item.driver_id}</Td>
 				<Td>
 					<Stack direction={"row"} spacing={1}>
 						<IconButton onClick={onOpen} aria-label="">
@@ -243,6 +267,26 @@ export function TableItem({
 									{...register("capacity_id", { required: true })}
 								/>
 								{errors.capacity_id && (
+									<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
+								)}
+							</FormControl>
+							<FormControl isInvalid={errors.depo_id ? true : false}>
+								<FormLabel>ID Депо</FormLabel>
+								<Input
+									type="number"
+									{...register("depo_id", { required: true })}
+								/>
+								{errors.depo_id && (
+									<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
+								)}
+							</FormControl>
+							<FormControl isInvalid={errors.driver_id ? true : false}>
+								<FormLabel>ID Водителя</FormLabel>
+								<Input
+									type="number"
+									{...register("driver_id", { required: true })}
+								/>
+								{errors.driver_id && (
 									<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
 								)}
 							</FormControl>

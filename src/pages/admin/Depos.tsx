@@ -84,7 +84,7 @@ function Depos() {
 							<Th>ID</Th>
 							<Th>Название</Th>
 							<Th>Адрес</Th>
-							<Th>ID Транспорта</Th>
+
 							<Th>Действия</Th>
 						</Tr>
 					</Thead>
@@ -115,16 +115,6 @@ function Depos() {
 									<FormLabel>Адрес</FormLabel>
 									<Input {...register("depo_address", { required: true })} />
 									{errors.depo_address && (
-										<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
-									)}
-								</FormControl>
-								<FormControl isInvalid={errors.vehicle_id ? true : false}>
-									<FormLabel>ID Транспорта</FormLabel>
-									<Input
-										type="number"
-										{...register("vehicle_id", { required: true })}
-									/>
-									{errors.vehicle_id && (
 										<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
 									)}
 								</FormControl>
@@ -165,7 +155,6 @@ export function TableItem({
 		defaultValues: {
 			depo_name: item.depo_name,
 			depo_address: item.depo_address,
-			vehicle_id: item.vehicle_id,
 		},
 	});
 	const onSubmit = handleSubmit(async data => {
@@ -194,7 +183,7 @@ export function TableItem({
 				<Td>{item.id}</Td>
 				<Td>{item.depo_name}</Td>
 				<Td>{item.depo_address}</Td>
-				<Td>{item.vehicle_id}</Td>
+
 				<Td>
 					<Stack direction={"row"} spacing={1}>
 						<IconButton onClick={onOpen} aria-label="">
@@ -239,16 +228,6 @@ export function TableItem({
 								<FormLabel>Адрес</FormLabel>
 								<Input {...register("depo_address", { required: true })} />
 								{errors.depo_address && (
-									<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
-								)}
-							</FormControl>
-							<FormControl isInvalid={errors.vehicle_id ? true : false}>
-								<FormLabel>ID Транспорта</FormLabel>
-								<Input
-									type="number"
-									{...register("vehicle_id", { required: true })}
-								/>
-								{errors.vehicle_id && (
 									<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
 								)}
 							</FormControl>

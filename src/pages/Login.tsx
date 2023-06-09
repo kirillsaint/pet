@@ -6,21 +6,25 @@ import {
 	FormLabel,
 	Heading,
 	Input,
+	Link,
+	Text,
 	useBoolean,
 	useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useState } from "react";
+import { Link as RLink } from "react-router-dom";
 import config from "../config";
 import auth from "../lib/auth";
 
 function Login() {
+	const [login, setLogin] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
 	const [loading, setLoading] = useBoolean();
 	const toast = useToast();
 
 	return (
-		<Center minH={"100vh"} w="full">
+		<Center minH={"80vh"} w="full">
 			<Container
 				alignContent={"center"}
 				textAlign={"center"}
@@ -31,6 +35,14 @@ function Login() {
 				maxW="sm"
 			>
 				<Heading mb={2}>Авторизация</Heading>
+				<FormControl mb={2}>
+					<FormLabel mb={0}>Логин</FormLabel>
+					<Input
+						value={login}
+						onChange={e => setLogin(e.currentTarget.value)}
+						placeholder="Введите логин"
+					/>
+				</FormControl>
 				<FormControl mb={2}>
 					<FormLabel mb={0}>Пароль</FormLabel>
 					<Input
@@ -46,17 +58,19 @@ function Login() {
 					onClick={async () => {
 						setLoading.on();
 						try {
-							await axios.get(`${config.apiUrl}/depos`, {
-								headers: {
-									Authorization: password,
-								},
-							});
-							auth.setPassword(password);
+							const { data: res } = await axios.post(
+								`${config.apiUrl}/auth/login`,
+								{
+									login,
+									password,
+								}
+							);
+							auth.setPassword(res.auth.token);
 							window.location.reload();
 						} catch (error) {
 							toast({
 								title: "Ошибка!",
-								description: "Неправильный пароль",
+								description: "Неправильный логин или пароль",
 								status: "error",
 								isClosable: true,
 								duration: 3000,
@@ -68,6 +82,12 @@ function Login() {
 				>
 					Войти
 				</Button>
+				<Text textAlign={"left"} mt={2}>
+					Нет аккаунта?{" "}
+					<Link as={RLink} to="/lk/register">
+						Зарегистрироваться
+					</Link>
+				</Text>
 			</Container>
 		</Center>
 	);

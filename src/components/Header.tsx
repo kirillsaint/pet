@@ -1,8 +1,11 @@
 import { Heading, Image, Link, Stack } from "@chakra-ui/react";
+import { useContext } from "react";
 import { Link as RLink, useLocation } from "react-router-dom";
+import { AppContext } from "../providers/AppContext";
 
 function Header() {
 	const location = useLocation();
+	const context = useContext(AppContext);
 	return (
 		<Stack
 			h={24}
@@ -35,7 +38,7 @@ function Header() {
 							color: "gray.900",
 						}}
 						as={RLink}
-						to="/test"
+						to="/"
 					>
 						Главная
 					</Link>
@@ -50,14 +53,19 @@ function Header() {
 							color: "gray.900",
 						}}
 						as={RLink}
-						to="/test/taxi"
+						to="/taxi"
 					>
 						Автопарк
 					</Link>
 				</Stack>
 			</Stack>
-			<Link fontSize={"2xl"} fontWeight={"bold"} as={RLink} to="/">
-				ВХОД
+			<Link
+				fontSize={context.props.auth ? "xl" : "2xl"}
+				fontWeight={"bold"}
+				as={RLink}
+				to="/lk"
+			>
+				{context.props.auth ? "ЛИЧНЫЙ КАБИНЕТ" : "ВХОД"}
 			</Link>
 		</Stack>
 	);

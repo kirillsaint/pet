@@ -1,11 +1,9 @@
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import {
 	Button,
 	Center,
 	FormControl,
 	FormErrorMessage,
 	FormLabel,
-	IconButton,
 	Input,
 	Modal,
 	ModalBody,
@@ -15,7 +13,6 @@ import {
 	ModalHeader,
 	ModalOverlay,
 	Spinner,
-	Stack,
 	Table,
 	TableContainer,
 	Tbody,
@@ -26,24 +23,28 @@ import {
 	useDisclosure,
 } from "@chakra-ui/react";
 import axios from "axios";
+import moment from "moment";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import config from "../../config";
 import auth from "../../lib/auth";
-import Customer from "../../types/Customer";
+import Order from "../../types/Order";
 
-function Customers() {
-	const [data, setData] = useState<Customer[] | null>(null);
+function Orders() {
+	const [data, setData] = useState<Order[] | null>(null);
 
 	const getData = async () => {
 		try {
-			const { data: res } = await axios.get(`${config.apiUrl}/customers`, {
-				headers: {
-					Authorization: auth.getPassword(),
-				},
-			});
+			const { data: res } = await axios.get(
+				`${config.apiUrl}/customer/orders`,
+				{
+					headers: {
+						Authorization: auth.getPassword(),
+					},
+				}
+			);
 
-			setData(res.data);
+			setData(res.orders);
 		} catch {}
 	};
 
@@ -58,10 +59,14 @@ function Customers() {
 		handleSubmit,
 		reset,
 		formState: { errors, isSubmitting },
-	} = useForm<Customer>();
+	} = useForm<Order>({
+		defaultValues: {
+			cargo_type_id: 0,
+		},
+	});
 	const onSubmit = handleSubmit(async data => {
 		try {
-			await axios.post(`${config.apiUrl}/customers/create`, data, {
+			await axios.post(`${config.apiUrl}/customer/create_order`, data, {
 				headers: {
 					Authorization: auth.getPassword(),
 				},
@@ -82,13 +87,11 @@ function Customers() {
 					<Thead>
 						<Tr>
 							<Th>ID</Th>
-							<Th>ФИО</Th>
-							<Th>Номер телефона</Th>
-							<Th>Email</Th>
-							<Th>Груз</Th>
-							<Th>ID типа груза</Th>
-							<Th>ID города</Th>
-							<Th>Действия</Th>
+							<Th>Дата доставки</Th>
+							<Th>Адрес погрузки</Th>
+							<Th>Адрес выгрузки</Th>
+							<Th>Цена</Th>
+							<Th>Статус</Th>
 						</Tr>
 					</Thead>
 					<Tbody>
@@ -100,34 +103,66 @@ function Customers() {
 				<Modal isOpen={isOpen} onClose={onClose}>
 					<ModalOverlay />
 					<ModalContent>
-						<ModalHeader>Создать депо</ModalHeader>
+						<ModalHeader>Создать заказ</ModalHeader>
 						<ModalCloseButton />
 						<form onSubmit={onSubmit}>
 							<ModalBody>
-								<FormControl mb={2} isInvalid={errors.full_name ? true : false}>
-									<FormLabel>ФИО</FormLabel>
-									<Input {...register("full_name", { required: true })} />
-									{errors.full_name && (
+								<FormControl
+									mb={2}
+									isInvalid={errors.recipient_full_name ? true : false}
+								>
+									<FormLabel>ФИО Получателя</FormLabel>
+									<Input
+										{...register("recipient_full_name", { required: true })}
+									/>
+									{errors.recipient_full_name && (
 										<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
 									)}
 								</FormControl>
 								<FormControl
 									mb={2}
-									isInvalid={errors.phone_number ? true : false}
+									isInvalid={errors.recipient_phone_number ? true : false}
 								>
-									<FormLabel>Номер телефона</FormLabel>
-									<Input {...register("phone_number", { required: true })} />
-									{errors.phone_number && (
+									<FormLabel>Номер получателя</FormLabel>
+									<Input
+										{...register("recipient_phone_number", { required: true })}
+									/>
+									{errors.recipient_phone_number && (
 										<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
 									)}
 								</FormControl>
 								<FormControl
 									mb={2}
-									isInvalid={errors.email_address ? true : false}
+									isInvalid={errors.delivery_date ? true : false}
 								>
-									<FormLabel>Email</FormLabel>
-									<Input {...register("email_address", { required: true })} />
-									{errors.email_address && (
+									<FormLabel>Дата доставки</FormLabel>
+									<Input
+										type="datetime-local"
+										{...register("delivery_date", { required: true })}
+									/>
+									{errors.delivery_date && (
+										<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
+									)}
+								</FormControl>
+								<FormControl
+									mb={2}
+									isInvalid={errors.loading_address ? true : false}
+								>
+									<FormLabel>Адрес погрузки</FormLabel>
+									<Input {...register("loading_address", { required: true })} />
+									{errors.loading_address && (
+										<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
+									)}
+								</FormControl>
+								<FormControl
+									mb={2}
+									isInvalid={errors.unloading_address ? true : false}
+								>
+									<FormLabel>Адрес выгрузки</FormLabel>
+									<Input
+										{...register("unloading_address", { required: true })}
+									/>
+									{errors.unloading_address && (
 										<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
 									)}
 								</FormControl>
@@ -135,29 +170,6 @@ function Customers() {
 									<FormLabel>Груз</FormLabel>
 									<Input {...register("cargo", { required: true })} />
 									{errors.cargo && (
-										<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
-									)}
-								</FormControl>
-								<FormControl
-									mb={2}
-									isInvalid={errors.cargo_type_id ? true : false}
-								>
-									<FormLabel>ID типа груза</FormLabel>
-									<Input
-										type="number"
-										{...register("cargo_type_id", { required: true })}
-									/>
-									{errors.cargo_type_id && (
-										<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
-									)}
-								</FormControl>
-								<FormControl isInvalid={errors.city_id ? true : false}>
-									<FormLabel>ID города</FormLabel>
-									<Input
-										type="number"
-										{...register("city_id", { required: true })}
-									/>
-									{errors.city_id && (
 										<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
 									)}
 								</FormControl>
@@ -184,7 +196,7 @@ export function TableItem({
 	item,
 	getData,
 }: {
-	item: Customer;
+	item: Order;
 	getData: () => void;
 }) {
 	const { isOpen, onOpen, onClose } = useDisclosure();
@@ -194,13 +206,13 @@ export function TableItem({
 		handleSubmit,
 		reset,
 		formState: { errors, isSubmitting },
-	} = useForm<Customer>({
+	} = useForm<Order>({
 		defaultValues: item,
 	});
 	const onSubmit = handleSubmit(async data => {
 		try {
 			await axios.post(
-				`${config.apiUrl}/customers/edit`,
+				`${config.apiUrl}/orders/edit`,
 				{
 					id: item.id,
 					...data,
@@ -221,33 +233,11 @@ export function TableItem({
 		<>
 			<Tr>
 				<Td>{item.id}</Td>
-				<Td>{item.full_name}</Td>
-				<Td>{item.phone_number}</Td>
-				<Td>{item.email_address}</Td>
-				<Td>{item.cargo}</Td>
-				<Td>{item.cargo_type_id}</Td>
-				<Td>{item.city_id}</Td>
-				<Td>
-					<Stack direction={"row"} spacing={1}>
-						<IconButton onClick={onOpen} aria-label="">
-							<EditIcon />
-						</IconButton>
-						<IconButton
-							onClick={async () => {
-								await axios.post(
-									`${config.apiUrl}/customers/delete`,
-									{ id: item.id },
-									{ headers: { Authorization: auth.getPassword() } }
-								);
-
-								getData();
-							}}
-							aria-label=""
-						>
-							<DeleteIcon />
-						</IconButton>
-					</Stack>
-				</Td>
+				<Td>{moment(item.delivery_date).format("LLL")}</Td>
+				<Td>{item.loading_address}</Td>
+				<Td>{item.unloading_address}</Td>
+				<Td>{item.cost || "Неизвестно"}</Td>
+				<Td>{item.status === "delivered" ? "Доставлен" : "В ожидании"}</Td>
 			</Tr>
 
 			<Modal isOpen={isOpen} onClose={onClose}>
@@ -257,60 +247,64 @@ export function TableItem({
 					<ModalCloseButton />
 					<form onSubmit={onSubmit}>
 						<ModalBody>
-							<FormControl mb={2} isInvalid={errors.full_name ? true : false}>
-								<FormLabel>ФИО</FormLabel>
-								<Input {...register("full_name", { required: true })} />
-								{errors.full_name && (
+							<FormControl
+								mb={2}
+								isInvalid={errors.recipient_full_name ? true : false}
+							>
+								<FormLabel>ФИО Получателя</FormLabel>
+								<Input
+									{...register("recipient_full_name", { required: true })}
+								/>
+								{errors.recipient_full_name && (
 									<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
 								)}
 							</FormControl>
 							<FormControl
 								mb={2}
-								isInvalid={errors.phone_number ? true : false}
+								isInvalid={errors.recipient_phone_number ? true : false}
 							>
-								<FormLabel>Номер телефона</FormLabel>
-								<Input {...register("phone_number", { required: true })} />
-								{errors.phone_number && (
+								<FormLabel>Номер получателя</FormLabel>
+								<Input
+									{...register("recipient_phone_number", { required: true })}
+								/>
+								{errors.recipient_phone_number && (
 									<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
 								)}
 							</FormControl>
-							<FormControl
-								mb={2}
-								isInvalid={errors.email_address ? true : false}
-							>
-								<FormLabel>Email</FormLabel>
-								<Input {...register("email_address", { required: true })} />
-								{errors.email_address && (
-									<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
-								)}
-							</FormControl>
-							<FormControl mb={2} isInvalid={errors.cargo ? true : false}>
-								<FormLabel>Груз</FormLabel>
-								<Input {...register("cargo", { required: true })} />
-								{errors.cargo && (
-									<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
-								)}
-							</FormControl>
-							<FormControl
-								mb={2}
-								isInvalid={errors.cargo_type_id ? true : false}
-							>
-								<FormLabel>ID типа груза</FormLabel>
+							<FormControl mb={2} isInvalid={errors.customer_id ? true : false}>
+								<FormLabel>ID Заказчика</FormLabel>
 								<Input
 									type="number"
-									{...register("cargo_type_id", { required: true })}
+									{...register("customer_id", { required: true })}
 								/>
-								{errors.cargo_type_id && (
+								{errors.customer_id && (
 									<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
 								)}
 							</FormControl>
-							<FormControl isInvalid={errors.city_id ? true : false}>
-								<FormLabel>ID города</FormLabel>
+							<FormControl mb={2} isInvalid={errors.driver_id ? true : false}>
+								<FormLabel>ID Водителя</FormLabel>
 								<Input
 									type="number"
-									{...register("city_id", { required: true })}
+									{...register("driver_id", { required: true })}
 								/>
-								{errors.city_id && (
+								{errors.driver_id && (
+									<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
+								)}
+							</FormControl>
+							<FormControl mb={2} isInvalid={errors.vehicle_id ? true : false}>
+								<FormLabel>ID Транспорта</FormLabel>
+								<Input
+									type="number"
+									{...register("vehicle_id", { required: true })}
+								/>
+								{errors.vehicle_id && (
+									<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
+								)}
+							</FormControl>
+							<FormControl mb={2} isInvalid={errors.cost ? true : false}>
+								<FormLabel>Цена</FormLabel>
+								<Input {...register("cost", { required: true })} />
+								{errors.cost && (
 									<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
 								)}
 							</FormControl>
@@ -328,4 +322,4 @@ export function TableItem({
 	);
 }
 
-export default Customers;
+export default Orders;

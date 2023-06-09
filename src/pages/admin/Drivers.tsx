@@ -30,10 +30,10 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import config from "../../config";
 import auth from "../../lib/auth";
-import Driver from "../../types/Driver";
+import { IUser } from "../../providers/AppContext";
 
 function Drivers() {
-	const [data, setData] = useState<Driver[] | null>(null);
+	const [data, setData] = useState<IUser[] | null>(null);
 
 	const getData = async () => {
 		try {
@@ -58,14 +58,21 @@ function Drivers() {
 		handleSubmit,
 		reset,
 		formState: { errors, isSubmitting },
-	} = useForm<Driver>();
+	} = useForm<IUser>();
 	const onSubmit = handleSubmit(async data => {
 		try {
-			await axios.post(`${config.apiUrl}/drivers/create`, data, {
-				headers: {
-					Authorization: auth.getPassword(),
+			await axios.post(
+				`${config.apiUrl}/drivers/create`,
+				{
+					...data,
+					city_id: 0,
 				},
-			});
+				{
+					headers: {
+						Authorization: auth.getPassword(),
+					},
+				}
+			);
 			await getData();
 			reset();
 			onClose();
@@ -109,6 +116,17 @@ function Drivers() {
 							</FormControl>
 							<FormControl
 								mb={2}
+								isInvalid={errors.email_address ? true : false}
+							>
+								<FormLabel>Email</FormLabel>
+								<Input {...register("email_address", { required: true })} />
+								{errors.email_address && (
+									<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
+								)}
+							</FormControl>
+
+							<FormControl
+								mb={2}
 								isInvalid={errors.phone_number ? true : false}
 							>
 								<FormLabel>Номер телефона</FormLabel>
@@ -121,6 +139,13 @@ function Drivers() {
 								<FormLabel>Паспорт</FormLabel>
 								<Input {...register("passport", { required: true })} />
 								{errors.passport && (
+									<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
+								)}
+							</FormControl>
+							<FormControl mb={2} isInvalid={errors.password ? true : false}>
+								<FormLabel>Пароль</FormLabel>
+								<Input {...register("password", { required: true })} />
+								{errors.password && (
 									<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
 								)}
 							</FormControl>
@@ -146,7 +171,7 @@ export function TableItem({
 	item,
 	getData,
 }: {
-	item: Driver;
+	item: IUser;
 	getData: () => void;
 }) {
 	const { isOpen, onOpen, onClose } = useDisclosure();
@@ -156,7 +181,7 @@ export function TableItem({
 		handleSubmit,
 		reset,
 		formState: { errors, isSubmitting },
-	} = useForm<Driver>({
+	} = useForm<IUser>({
 		defaultValues: item,
 	});
 	const onSubmit = handleSubmit(async data => {
@@ -164,8 +189,9 @@ export function TableItem({
 			await axios.post(
 				`${config.apiUrl}/drivers/edit`,
 				{
-					id: item.id,
 					...data,
+					id: item.id,
+					city_id: 0,
 				},
 				{
 					headers: {
@@ -220,6 +246,16 @@ export function TableItem({
 								<FormLabel>ФИО</FormLabel>
 								<Input {...register("full_name", { required: true })} />
 								{errors.full_name && (
+									<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
+								)}
+							</FormControl>
+							<FormControl
+								mb={2}
+								isInvalid={errors.email_address ? true : false}
+							>
+								<FormLabel>Email</FormLabel>
+								<Input {...register("email_address", { required: true })} />
+								{errors.email_address && (
 									<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
 								)}
 							</FormControl>

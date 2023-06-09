@@ -3,4 +3,6 @@ export default interface Vehicle {
 	firm_mark: string;
 	state_number: string;
 	capacity_id: number;
+	depo_id: number;
+	driver_id: number;
 }

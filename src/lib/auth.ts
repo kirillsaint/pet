@@ -7,7 +7,9 @@ function setPassword(password: string | null) {
 }
 
 function getPassword() {
-	return window.localStorage.getItem("auth-key");
+	return window.localStorage.getItem("auth-key")
+		? "Bearer " + window.localStorage.getItem("auth-key")
+		: null;
 }
 
 const auth = {

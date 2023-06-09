@@ -239,9 +239,9 @@ export function TableItem({
 				<Td>{item.customer_id}</Td>
 				<Td>{item.driver_id}</Td>
 				<Td>{item.vehicle_id}</Td>
-				<Td>{moment(item.created_at).format("LL")}</Td>
+				<Td>{moment(item.created_at).format("LLL")}</Td>
 				<Td>
-					{item.deleviry_date ? moment(item.deleviry_date).format("LL") : "–"}
+					{item.delivery_date ? moment(item.delivery_date).format("LLL") : "–"}
 				</Td>
 				<Td>{item.cost}</Td>
 				<Td>
@@ -310,20 +310,14 @@ export function TableItem({
 							</FormControl>
 							<FormControl mb={2} isInvalid={errors.driver_id ? true : false}>
 								<FormLabel>ID Водителя</FormLabel>
-								<Input
-									type="number"
-									{...register("driver_id", { required: true })}
-								/>
+								<Input type="number" {...register("driver_id")} />
 								{errors.driver_id && (
 									<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
 								)}
 							</FormControl>
 							<FormControl mb={2} isInvalid={errors.vehicle_id ? true : false}>
 								<FormLabel>ID Транспорта</FormLabel>
-								<Input
-									type="number"
-									{...register("vehicle_id", { required: true })}
-								/>
+								<Input type="number" {...register("vehicle_id")} />
 								{errors.vehicle_id && (
 									<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
 								)}
