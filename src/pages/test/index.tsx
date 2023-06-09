@@ -2,6 +2,7 @@ import {
 	Box,
 	Button,
 	Center,
+	Divider,
 	Heading,
 	Image,
 	Input,
@@ -178,13 +179,16 @@ function Landing() {
 					</Stack>
 				</form>
 			</Stack>
-			<Stack
-				alignItems={"center"}
-				direction={"row"}
-				spacing={8}
-				mt={64}
-				mb={64}
-			>
+			<Center>
+				<Divider
+					borderWidth={"8px"}
+					w="100px"
+					borderColor="orange"
+					mt={48}
+					mb={16}
+				/>
+			</Center>
+			<Stack alignItems={"center"} direction={"row"} spacing={8}>
 				<Stack
 					direction={["column-reverse", "row"]}
 					justifyContent={"space-between"}
@@ -241,7 +245,16 @@ function Landing() {
 					/>
 				</Stack>
 			</Stack>
-			<Stack mb={32} direction={"column"} spacing={16}>
+			<Center>
+				<Divider
+					borderWidth={"8px"}
+					w="100px"
+					borderColor="orange"
+					mt={16}
+					mb={16}
+				/>
+			</Center>
+			<Stack direction={"column"} spacing={16}>
 				<Center>
 					<Heading>Что мы предлагаем?</Heading>
 				</Center>

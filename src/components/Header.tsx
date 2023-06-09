@@ -16,8 +16,8 @@ function Header() {
 			w="full"
 			p={2}
 			alignItems={"center"}
-			paddingInlineStart={2}
-			paddingInlineEnd={8}
+			paddingInlineStart={[4, 8]}
+			paddingInlineEnd={[4, 8]}
 			bg="white"
 			zIndex={999}
 		>

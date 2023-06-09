@@ -6,8 +6,8 @@ function Footer() {
 			direction={["column", "row"]}
 			justifyContent={"space-between"}
 			bgColor={"black"}
-			paddingInlineStart={4}
-			paddingInlineEnd={4}
+			paddingInlineStart={[4, 8]}
+			paddingInlineEnd={[4, 8]}
 			pt={2}
 			pb={2}
 			alignItems={["start", "center"]}

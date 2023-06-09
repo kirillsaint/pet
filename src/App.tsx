@@ -64,7 +64,7 @@ function App() {
 		<BrowserRouter>
 			<Stack direction={"column"} justifyContent={"space-between"} minH="100vh">
 				<Header />
-				<Box paddingInlineStart={4} paddingInlineEnd={4} pt={32}>
+				<Box paddingInlineStart={[4, 8]} paddingInlineEnd={[4, 8]} pt={32}>
 					<Routes>
 						<Route
 							path="/lk"
