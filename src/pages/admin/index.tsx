@@ -11,6 +11,7 @@ import {
 	Tabs,
 } from "@chakra-ui/react";
 import auth from "../../lib/auth";
+import Cities from "./Cities";
 import Customers from "./Customers";
 import Depos from "./Depos";
 import Drivers from "./Drivers";
@@ -28,7 +29,8 @@ function Admin() {
 						<Tab>Транспорт</Tab>
 						<Tab>Водители</Tab>
 						<Tab>Заказчики</Tab>
-						<Tab>Заявка</Tab>
+						<Tab>Города</Tab>
+						<Tab>Заявки</Tab>
 					</TabList>
 				</Stack>
 
@@ -44,6 +46,9 @@ function Admin() {
 					</TabPanel>
 					<TabPanel>
 						<Customers />
+					</TabPanel>
+					<TabPanel>
+						<Cities />
 					</TabPanel>
 					<TabPanel>
 						<Orders />

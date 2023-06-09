@@ -14,6 +14,7 @@ import {
 	ModalFooter,
 	ModalHeader,
 	ModalOverlay,
+	Select,
 	Spinner,
 	Stack,
 	Table,
@@ -26,11 +27,11 @@ import {
 	useDisclosure,
 } from "@chakra-ui/react";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import config from "../../config";
 import auth from "../../lib/auth";
-import { IUser } from "../../providers/AppContext";
+import { AppContext, IUser } from "../../providers/AppContext";
 
 function Drivers() {
 	const [data, setData] = useState<IUser[] | null>(null);
@@ -61,23 +62,18 @@ function Drivers() {
 	} = useForm<IUser>();
 	const onSubmit = handleSubmit(async data => {
 		try {
-			await axios.post(
-				`${config.apiUrl}/drivers/create`,
-				{
-					...data,
-					city_id: 0,
+			await axios.post(`${config.apiUrl}/drivers/create`, data, {
+				headers: {
+					Authorization: auth.getPassword(),
 				},
-				{
-					headers: {
-						Authorization: auth.getPassword(),
-					},
-				}
-			);
+			});
 			await getData();
 			reset();
 			onClose();
 		} catch (error) {}
 	});
+
+	const context = useContext(AppContext);
 
 	return data !== null ? (
 		<TableContainer>
@@ -145,6 +141,20 @@ function Drivers() {
 									<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
 								)}
 							</FormControl>
+							<FormControl mb={2} isInvalid={errors.city_id ? true : false}>
+								<FormLabel mb={0}>Город</FormLabel>
+								<Select
+									placeholder="Выберите город"
+									{...register("city_id", { required: true })}
+								>
+									{context.props.cities.map(city => (
+										<option value={city.id}>{city.city_name}</option>
+									))}
+								</Select>
+								{errors.city_id && (
+									<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
+								)}
+							</FormControl>
 							<FormControl mb={2} isInvalid={errors.password ? true : false}>
 								<FormLabel>Пароль</FormLabel>
 								<Input {...register("password", { required: true })} />
@@ -194,7 +204,6 @@ export function TableItem({
 				{
 					...data,
 					id: item.id,
-					city_id: 0,
 				},
 				{
 					headers: {
@@ -207,6 +216,8 @@ export function TableItem({
 			onClose();
 		} catch (error) {}
 	});
+
+	const context = useContext(AppContext);
 
 	return (
 		<>
@@ -279,6 +290,20 @@ export function TableItem({
 								<FormLabel>Паспорт</FormLabel>
 								<Input {...register("passport", { required: true })} />
 								{errors.passport && (
+									<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
+								)}
+							</FormControl>
+							<FormControl mb={2} isInvalid={errors.city_id ? true : false}>
+								<FormLabel mb={0}>Город</FormLabel>
+								<Select
+									placeholder="Выберите город"
+									{...register("city_id", { required: true })}
+								>
+									{context.props.cities.map(city => (
+										<option value={city.id}>{city.city_name}</option>
+									))}
+								</Select>
+								{errors.city_id && (
 									<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
 								)}
 							</FormControl>

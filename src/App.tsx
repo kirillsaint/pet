@@ -27,7 +27,14 @@ function App() {
 
 	useEffect(() => {
 		const getData = async () => {
+			const { data: cities } = await axios.get(`${config.apiUrl}/cities`);
 			if (!auth.getPassword()) {
+				if (context.setProps) {
+					context.setProps({
+						auth: null,
+						cities: cities.data,
+					});
+				}
 				return;
 			}
 			try {
@@ -39,6 +46,7 @@ function App() {
 
 				if (context.setProps) {
 					context.setProps({
+						cities: cities.data,
 						auth: res.auth,
 					});
 				}

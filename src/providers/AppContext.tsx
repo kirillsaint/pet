@@ -5,6 +5,7 @@ import {
 	SetStateAction,
 	useState,
 } from "react";
+import City from "../types/City";
 
 export type AppContextType = {
 	props: PropsType;
@@ -28,17 +29,20 @@ export type IUser = {
 
 export type PropsType = {
 	auth: IUser | null;
+	cities: City[];
 };
 
 const AppContext = createContext<AppContextType>({
 	props: {
 		auth: null,
+		cities: [],
 	},
 });
 
 export default function AppProvider({ children }: { children: ReactNode }) {
 	const [props, setProps] = useState<PropsType>({
 		auth: null,
+		cities: [],
 	});
 
 	return (

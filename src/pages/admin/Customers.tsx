@@ -14,6 +14,7 @@ import {
 	ModalFooter,
 	ModalHeader,
 	ModalOverlay,
+	Select,
 	Spinner,
 	Stack,
 	Table,
@@ -26,10 +27,11 @@ import {
 	useDisclosure,
 } from "@chakra-ui/react";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import config from "../../config";
 import auth from "../../lib/auth";
+import { AppContext } from "../../providers/AppContext";
 import Customer from "../../types/Customer";
 
 function Customers() {
@@ -71,6 +73,8 @@ function Customers() {
 			onClose();
 		} catch (error) {}
 	});
+
+	const context = useContext(AppContext);
 
 	return data !== null ? (
 		<>
@@ -132,32 +136,17 @@ function Customers() {
 										<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
 									)}
 								</FormControl>
-								<FormControl mb={2} isInvalid={errors.cargo ? true : false}>
-									<FormLabel>Груз</FormLabel>
-									<Input {...register("cargo", { required: true })} />
-									{errors.cargo && (
-										<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
-									)}
-								</FormControl>
-								<FormControl
-									mb={2}
-									isInvalid={errors.cargo_type_id ? true : false}
-								>
-									<FormLabel>ID типа груза</FormLabel>
-									<Input
-										type="number"
-										{...register("cargo_type_id", { required: true })}
-									/>
-									{errors.cargo_type_id && (
-										<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
-									)}
-								</FormControl>
-								<FormControl isInvalid={errors.city_id ? true : false}>
-									<FormLabel>ID города</FormLabel>
-									<Input
-										type="number"
+
+								<FormControl mb={2} isInvalid={errors.city_id ? true : false}>
+									<FormLabel mb={0}>Город</FormLabel>
+									<Select
+										placeholder="Выберите город"
 										{...register("city_id", { required: true })}
-									/>
+									>
+										{context.props.cities.map(city => (
+											<option value={city.id}>{city.city_name}</option>
+										))}
+									</Select>
 									{errors.city_id && (
 										<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
 									)}
@@ -217,6 +206,8 @@ export function TableItem({
 			onClose();
 		} catch (error) {}
 	});
+
+	const context = useContext(AppContext);
 
 	return (
 		<>
@@ -286,32 +277,17 @@ export function TableItem({
 									<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
 								)}
 							</FormControl>
-							<FormControl mb={2} isInvalid={errors.cargo ? true : false}>
-								<FormLabel>Груз</FormLabel>
-								<Input {...register("cargo", { required: true })} />
-								{errors.cargo && (
-									<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
-								)}
-							</FormControl>
-							<FormControl
-								mb={2}
-								isInvalid={errors.cargo_type_id ? true : false}
-							>
-								<FormLabel>ID типа груза</FormLabel>
-								<Input
-									type="number"
-									{...register("cargo_type_id", { required: true })}
-								/>
-								{errors.cargo_type_id && (
-									<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
-								)}
-							</FormControl>
-							<FormControl isInvalid={errors.city_id ? true : false}>
-								<FormLabel>ID города</FormLabel>
-								<Input
-									type="number"
+
+							<FormControl mb={2} isInvalid={errors.city_id ? true : false}>
+								<FormLabel mb={0}>Город</FormLabel>
+								<Select
+									placeholder="Выберите город"
 									{...register("city_id", { required: true })}
-								/>
+								>
+									{context.props.cities.map(city => (
+										<option value={city.id}>{city.city_name}</option>
+									))}
+								</Select>
 								{errors.city_id && (
 									<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
 								)}

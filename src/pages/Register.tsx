@@ -7,15 +7,17 @@ import {
 	Heading,
 	Input,
 	Link,
+	Select,
 	Text,
 	useBoolean,
 	useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link as RLink } from "react-router-dom";
 import config from "../config";
 import auth from "../lib/auth";
+import { AppContext } from "../providers/AppContext";
 
 function Register() {
 	const [full_name, setFullName] = useState<string>("");
@@ -25,6 +27,8 @@ function Register() {
 	const [password, setPassword] = useState<string>("");
 	const [loading, setLoading] = useBoolean();
 	const toast = useToast();
+
+	const context = useContext(AppContext);
 
 	return (
 		<Center minH={"80vh"} w="full">
@@ -62,6 +66,19 @@ function Register() {
 						onChange={e => setEmail(e.currentTarget.value)}
 						placeholder="Введите Email"
 					/>
+				</FormControl>
+
+				<FormControl mb={2}>
+					<FormLabel mb={0}>Город</FormLabel>
+					<Select
+						value={city_id}
+						onChange={e => setCityId(Number(e.currentTarget.value))}
+						placeholder="Выберите город"
+					>
+						{context.props.cities.map(city => (
+							<option value={city.id}>{city.city_name}</option>
+						))}
+					</Select>
 				</FormControl>
 
 				<FormControl mb={2}>
