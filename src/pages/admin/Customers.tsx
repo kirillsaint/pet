@@ -23,6 +23,7 @@ import {
 	Td,
 	Th,
 	Thead,
+	Tooltip,
 	Tr,
 	useDisclosure,
 } from "@chakra-ui/react";
@@ -89,7 +90,7 @@ function Customers() {
 							<Th>ФИО</Th>
 							<Th>Номер телефона</Th>
 							<Th>Email</Th>
-							<Th>ID города</Th>
+							<Th>Город</Th>
 							<Th>Действия</Th>
 						</Tr>
 					</Thead>
@@ -216,7 +217,12 @@ export function TableItem({
 				<Td>{item.full_name}</Td>
 				<Td>{item.phone_number}</Td>
 				<Td>{item.email_address}</Td>
-				<Td>{item.city_id}</Td>
+				<Td>
+					<Tooltip label={`ID: ${item.city_id}`}>
+						{context.props.cities.find(c => c.id === item.city_id)?.city_name ||
+							"Неизвестно"}
+					</Tooltip>
+				</Td>
 				<Td>
 					<Stack direction={"row"} spacing={1}>
 						<IconButton onClick={onOpen} aria-label="">

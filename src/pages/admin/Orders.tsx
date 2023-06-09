@@ -22,6 +22,7 @@ import {
 	Td,
 	Th,
 	Thead,
+	Tooltip,
 	Tr,
 	useDisclosure,
 } from "@chakra-ui/react";
@@ -31,10 +32,16 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import config from "../../config";
 import auth from "../../lib/auth";
+import Customer from "../../types/Customer";
+import Driver from "../../types/Driver";
 import Order from "../../types/Order";
+import Vehicle from "../../types/Vehicle";
 
 function Orders() {
 	const [data, setData] = useState<Order[] | null>(null);
+	const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+	const [drivers, setDrivers] = useState<Driver[]>([]);
+	const [customers, setCustomers] = useState<Customer[]>([]);
 
 	const getData = async () => {
 		try {
@@ -44,7 +51,31 @@ function Orders() {
 				},
 			});
 
+			const { data: drivers } = await axios.get(`${config.apiUrl}/drivers`, {
+				headers: {
+					Authorization: auth.getPassword(),
+				},
+			});
+
+			const { data: vehicles } = await axios.get(`${config.apiUrl}/vehicles`, {
+				headers: {
+					Authorization: auth.getPassword(),
+				},
+			});
+
+			const { data: customers } = await axios.get(
+				`${config.apiUrl}/customers`,
+				{
+					headers: {
+						Authorization: auth.getPassword(),
+					},
+				}
+			);
+
 			setData(res.data);
+			setCustomers(customers.data);
+			setVehicles(vehicles.data);
+			setDrivers(drivers.data);
 		} catch {}
 	};
 
@@ -85,9 +116,9 @@ function Orders() {
 							<Th>ID</Th>
 							<Th>ФИО Получателя</Th>
 							<Th>Номер телефона получателя</Th>
-							<Th>ID Заказчика</Th>
-							<Th>ID Водителя</Th>
-							<Th>ID Транспорта</Th>
+							<Th>Заказчик</Th>
+							<Th>Водитель</Th>
+							<Th>Транспорт</Th>
 							<Th>Дата создания</Th>
 							<Th>Дата доставки</Th>
 							<Th>Цена</Th>
@@ -97,7 +128,13 @@ function Orders() {
 					</Thead>
 					<Tbody>
 						{data.map(item => (
-							<TableItem item={item} getData={getData} />
+							<TableItem
+								drivers={drivers}
+								customers={customers}
+								vehicles={vehicles}
+								item={item}
+								getData={getData}
+							/>
 						))}
 					</Tbody>
 				</Table>
@@ -197,9 +234,15 @@ function Orders() {
 export function TableItem({
 	item,
 	getData,
+	customers,
+	vehicles,
+	drivers,
 }: {
 	item: Order;
 	getData: () => void;
+	customers: Customer[];
+	vehicles: Vehicle[];
+	drivers: Driver[];
 }) {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -237,9 +280,24 @@ export function TableItem({
 				<Td>{item.id}</Td>
 				<Td>{item.recipient_full_name}</Td>
 				<Td>{item.recipient_phone_number}</Td>
-				<Td>{item.customer_id}</Td>
-				<Td>{item.driver_id}</Td>
-				<Td>{item.vehicle_id}</Td>
+				<Td>
+					<Tooltip label={`ID: ${item.customer_id}`}>
+						{customers.find(d => d.id === item.customer_id)?.full_name ||
+							"Неизвестно"}
+					</Tooltip>
+				</Td>
+				<Td>
+					<Tooltip label={`ID: ${item.driver_id}`}>
+						{drivers.find(d => d.id === item.driver_id)?.full_name ||
+							"Неизвестно"}
+					</Tooltip>
+				</Td>
+				<Td>
+					<Tooltip label={`ID: ${item.vehicle_id}`}>
+						{vehicles.find(d => d.id === item.vehicle_id)?.firm_mark ||
+							"Неизвестно"}
+					</Tooltip>
+				</Td>
 				<Td>{moment(item.created_at).format("LLL")}</Td>
 				<Td>
 					{item.delivery_date ? moment(item.delivery_date).format("LLL") : "–"}
