@@ -24,7 +24,7 @@ function Admin() {
 			<Heading mb={2}>Информация</Heading>
 			<Tabs isLazy variant="soft-rounded" colorScheme="orange">
 				<Stack direction={"row"} justifyContent={"space-between"} mb={2}>
-					<TabList>
+					<TabList flexWrap={"wrap"}>
 						<Tab>Депо</Tab>
 						<Tab>Транспорт</Tab>
 						<Tab>Водители</Tab>

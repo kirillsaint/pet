@@ -163,12 +163,14 @@ function Orders() {
 								>
 									<FormLabel>Номер получателя</FormLabel>
 									<Input
+										type="number"
 										{...register("recipient_phone_number", { required: true })}
 									/>
 									{errors.recipient_phone_number && (
 										<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
 									)}
 								</FormControl>
+
 								<FormControl
 									mb={2}
 									isInvalid={errors.customer_id ? true : false}
@@ -184,10 +186,7 @@ function Orders() {
 								</FormControl>
 								<FormControl mb={2} isInvalid={errors.driver_id ? true : false}>
 									<FormLabel>ID Водителя</FormLabel>
-									<Input
-										type="number"
-										{...register("driver_id", { required: true })}
-									/>
+									<Input type="number" {...register("driver_id")} />
 									{errors.driver_id && (
 										<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
 									)}
@@ -197,17 +196,56 @@ function Orders() {
 									isInvalid={errors.vehicle_id ? true : false}
 								>
 									<FormLabel>ID Транспорта</FormLabel>
-									<Input
-										type="number"
-										{...register("vehicle_id", { required: true })}
-									/>
+									<Input type="number" {...register("vehicle_id")} />
 									{errors.vehicle_id && (
+										<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
+									)}
+								</FormControl>
+								<FormControl
+									mb={2}
+									isInvalid={errors.loading_address ? true : false}
+								>
+									<FormLabel>Адрес погрузки</FormLabel>
+									<Input {...register("loading_address", { required: true })} />
+									{errors.loading_address && (
+										<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
+									)}
+								</FormControl>
+								<FormControl
+									mb={2}
+									isInvalid={errors.unloading_address ? true : false}
+								>
+									<FormLabel>Адрес выгрузки</FormLabel>
+									<Input
+										{...register("unloading_address", { required: true })}
+									/>
+									{errors.unloading_address && (
+										<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
+									)}
+								</FormControl>
+								<FormControl
+									mb={2}
+									isInvalid={errors.delivery_date ? true : false}
+								>
+									<FormLabel>Дата доставки</FormLabel>
+									<Input
+										type="datetime-local"
+										{...register("delivery_date", { required: true })}
+									/>
+									{errors.delivery_date && (
+										<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
+									)}
+								</FormControl>
+								<FormControl mb={2} isInvalid={errors.cargo ? true : false}>
+									<FormLabel>Груз</FormLabel>
+									<Input {...register("cargo", { required: true })} />
+									{errors.cargo && (
 										<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
 									)}
 								</FormControl>
 								<FormControl mb={2} isInvalid={errors.cost ? true : false}>
 									<FormLabel>Цена</FormLabel>
-									<Input {...register("cost", { required: true })} />
+									<Input {...register("cost")} />
 									{errors.cost && (
 										<FormErrorMessage>Это поле обязтельное</FormErrorMessage>
 									)}
@@ -356,6 +394,7 @@ export function TableItem({
 							>
 								<FormLabel>Номер получателя</FormLabel>
 								<Input
+									type="number"
 									{...register("recipient_phone_number", { required: true })}
 								/>
 								{errors.recipient_phone_number && (
