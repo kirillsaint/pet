@@ -10,7 +10,7 @@ function Footer() {
 			paddingInlineEnd={4}
 			pt={2}
 			pb={2}
-			alignItems={"center"}
+			alignItems={["start", "center"]}
 		>
 			<Stack direction={"column"} spacing={0}>
 				<Heading color="white" size="lg">
