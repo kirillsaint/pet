@@ -25,6 +25,7 @@ import {
 	Tooltip,
 	Tr,
 	useDisclosure,
+	useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -39,6 +40,7 @@ function Vehicles() {
 	const [data, setData] = useState<Vehicle[] | null>(null);
 	const [depos, setDepos] = useState<Depo[]>([]);
 	const [drivers, setDrivers] = useState<Driver[]>([]);
+	const toast = useToast();
 
 	const getData = async () => {
 		try {
@@ -92,7 +94,22 @@ function Vehicles() {
 			await getData();
 			reset();
 			onClose();
-		} catch (error) {}
+			toast({
+				title: "Успех!",
+				description: "Транспорт успешно создан",
+				duration: 3000,
+				isClosable: true,
+				status: "success",
+			});
+		} catch (error) {
+			toast({
+				title: "Ошибка!",
+				description: `${error}`,
+				duration: 3000,
+				isClosable: true,
+				status: "error",
+			});
+		}
 	});
 
 	return data !== null ? (
@@ -208,6 +225,7 @@ export function TableItem({
 	} = useForm<Vehicle>({
 		defaultValues: item,
 	});
+	const toast = useToast();
 	const onSubmit = handleSubmit(async data => {
 		try {
 			await axios.post(
@@ -225,7 +243,22 @@ export function TableItem({
 			await getData();
 			reset();
 			onClose();
-		} catch (error) {}
+			toast({
+				title: "Успех!",
+				description: "Транспорт успешно изменен",
+				duration: 3000,
+				isClosable: true,
+				status: "success",
+			});
+		} catch (error) {
+			toast({
+				title: "Ошибка!",
+				description: `${error}`,
+				duration: 3000,
+				isClosable: true,
+				status: "error",
+			});
+		}
 	});
 
 	return (

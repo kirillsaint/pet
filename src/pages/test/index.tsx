@@ -8,6 +8,7 @@ import {
 	Input,
 	SimpleGrid,
 	Stack,
+	useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useContext, useEffect } from "react";
@@ -26,6 +27,7 @@ function Landing() {
 		setValue("recipient_full_name", context.props.auth?.full_name || "");
 		setValue("recipient_phone_number", context.props.auth?.phone_number || "");
 	}, [context.props]);
+	const toast = useToast();
 
 	const {
 		register,
@@ -53,9 +55,23 @@ function Landing() {
 			});
 
 			reset();
-
+			toast({
+				title: "Успех!",
+				description: "Заказ успешно создан",
+				duration: 3000,
+				isClosable: true,
+				status: "success",
+			});
 			navigate("/lk");
-		} catch (error) {}
+		} catch (error) {
+			toast({
+				title: "Ошибка!",
+				description: `${error}`,
+				duration: 3000,
+				isClosable: true,
+				status: "error",
+			});
+		}
 	});
 
 	return (

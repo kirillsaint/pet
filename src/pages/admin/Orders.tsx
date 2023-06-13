@@ -25,6 +25,7 @@ import {
 	Tooltip,
 	Tr,
 	useDisclosure,
+	useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
 import moment from "moment";
@@ -42,6 +43,7 @@ function Orders() {
 	const [vehicles, setVehicles] = useState<Vehicle[]>([]);
 	const [drivers, setDrivers] = useState<Driver[]>([]);
 	const [customers, setCustomers] = useState<Customer[]>([]);
+	const toast = useToast();
 
 	const getData = async () => {
 		try {
@@ -101,7 +103,22 @@ function Orders() {
 			await getData();
 			reset();
 			onClose();
-		} catch (error) {}
+			toast({
+				title: "Успех!",
+				description: "Заказ успешно создан",
+				duration: 3000,
+				isClosable: true,
+				status: "success",
+			});
+		} catch (error) {
+			toast({
+				title: "Ошибка!",
+				description: `${error}`,
+				duration: 3000,
+				isClosable: true,
+				status: "error",
+			});
+		}
 	});
 
 	return data !== null ? (
@@ -283,6 +300,7 @@ export function TableItem({
 	drivers: Driver[];
 }) {
 	const { isOpen, onOpen, onClose } = useDisclosure();
+	const toast = useToast();
 
 	const {
 		register,
@@ -309,7 +327,22 @@ export function TableItem({
 			await getData();
 			reset();
 			onClose();
-		} catch (error) {}
+			toast({
+				title: "Успех!",
+				description: "Заказ успешно изменен",
+				duration: 3000,
+				isClosable: true,
+				status: "success",
+			});
+		} catch (error) {
+			toast({
+				title: "Ошибка!",
+				description: `${error}`,
+				duration: 3000,
+				isClosable: true,
+				status: "error",
+			});
+		}
 	});
 
 	return (

@@ -25,6 +25,7 @@ import {
 	Thead,
 	Tr,
 	useDisclosure,
+	useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
@@ -53,6 +54,7 @@ function Drivers() {
 	}, []);
 
 	const { isOpen, onOpen, onClose } = useDisclosure();
+	const toast = useToast();
 
 	const {
 		register,
@@ -70,7 +72,22 @@ function Drivers() {
 			await getData();
 			reset();
 			onClose();
-		} catch (error) {}
+			toast({
+				title: "Успех!",
+				description: "Водитель успешно создан",
+				duration: 3000,
+				isClosable: true,
+				status: "success",
+			});
+		} catch (error) {
+			toast({
+				title: "Ошибка!",
+				description: `${error}`,
+				duration: 3000,
+				isClosable: true,
+				status: "error",
+			});
+		}
 	});
 
 	const context = useContext(AppContext);
@@ -188,6 +205,7 @@ export function TableItem({
 	getData: () => void;
 }) {
 	const { isOpen, onOpen, onClose } = useDisclosure();
+	const toast = useToast();
 
 	const {
 		register,
@@ -214,7 +232,22 @@ export function TableItem({
 			await getData();
 			reset();
 			onClose();
-		} catch (error) {}
+			toast({
+				title: "Успех!",
+				description: "Водитель успешно изменен",
+				duration: 3000,
+				isClosable: true,
+				status: "success",
+			});
+		} catch (error) {
+			toast({
+				title: "Ошибка!",
+				description: `${error}`,
+				duration: 3000,
+				isClosable: true,
+				status: "error",
+			});
+		}
 	});
 
 	const context = useContext(AppContext);

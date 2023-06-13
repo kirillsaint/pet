@@ -10,6 +10,7 @@ import {
 	Th,
 	Thead,
 	Tr,
+	useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
 import moment from "moment";
@@ -76,6 +77,7 @@ export function TableItem({
 	item: Order;
 	getData: () => void;
 }) {
+	const toast = useToast();
 	return (
 		<>
 			<Tr>
@@ -123,7 +125,22 @@ export function TableItem({
 											}
 										);
 									}
-								} catch (error) {}
+									toast({
+										title: "Успех!",
+										description: "Статус заказа был изменен",
+										duration: 3000,
+										isClosable: true,
+										status: "success",
+									});
+								} catch (error) {
+									toast({
+										title: "Ошибка!",
+										description: `${error}`,
+										duration: 3000,
+										isClosable: true,
+										status: "error",
+									});
+								}
 								getData();
 							}}
 						></IconButton>

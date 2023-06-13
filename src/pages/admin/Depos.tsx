@@ -24,6 +24,7 @@ import {
 	Thead,
 	Tr,
 	useDisclosure,
+	useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -34,6 +35,7 @@ import Depo from "../../types/Depo";
 
 function Depos() {
 	const [data, setData] = useState<Depo[] | null>(null);
+	const toast = useToast();
 
 	const getData = async () => {
 		try {
@@ -69,7 +71,22 @@ function Depos() {
 			await getData();
 			reset();
 			onClose();
-		} catch (error) {}
+			toast({
+				title: "Успех!",
+				description: "Депо успешно создано",
+				duration: 3000,
+				isClosable: true,
+				status: "success",
+			});
+		} catch (error) {
+			toast({
+				title: "Ошибка!",
+				description: `${error}`,
+				duration: 3000,
+				isClosable: true,
+				status: "error",
+			});
+		}
 	});
 
 	return data !== null ? (
@@ -145,6 +162,7 @@ export function TableItem({
 	getData: () => void;
 }) {
 	const { isOpen, onOpen, onClose } = useDisclosure();
+	const toast = useToast();
 
 	const {
 		register,
@@ -174,7 +192,22 @@ export function TableItem({
 			await getData();
 			reset();
 			onClose();
-		} catch (error) {}
+			toast({
+				title: "Успех!",
+				description: "Депо успешно изменено",
+				duration: 3000,
+				isClosable: true,
+				status: "success",
+			});
+		} catch (error) {
+			toast({
+				title: "Ошибка!",
+				description: `${error}`,
+				duration: 3000,
+				isClosable: true,
+				status: "error",
+			});
+		}
 	});
 
 	return (

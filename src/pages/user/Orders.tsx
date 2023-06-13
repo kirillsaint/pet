@@ -21,6 +21,7 @@ import {
 	Thead,
 	Tr,
 	useDisclosure,
+	useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
 import moment from "moment";
@@ -84,8 +85,25 @@ function Orders() {
 			await getData();
 			reset();
 			onClose();
-		} catch (error) {}
+			toast({
+				title: "Успех!",
+				description: "Заказ успешно создан",
+				duration: 3000,
+				isClosable: true,
+				status: "success",
+			});
+		} catch (error) {
+			toast({
+				title: "Ошибка!",
+				description: `${error}`,
+				duration: 3000,
+				isClosable: true,
+				status: "error",
+			});
+		}
 	});
+
+	const toast = useToast();
 
 	return data !== null ? (
 		<>

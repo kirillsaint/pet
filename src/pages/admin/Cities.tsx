@@ -24,6 +24,7 @@ import {
 	Thead,
 	Tr,
 	useDisclosure,
+	useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
@@ -35,6 +36,7 @@ import City from "../../types/City";
 
 function Cities() {
 	const [data, setData] = useState<City[] | null>(null);
+	const toast = useToast();
 
 	const getData = async () => {
 		try {
@@ -51,7 +53,15 @@ function Cities() {
 					cities: res.data,
 				});
 			}
-		} catch {}
+		} catch (error) {
+			toast({
+				title: "Ошибка!",
+				description: `${error}`,
+				duration: 3000,
+				isClosable: true,
+				status: "error",
+			});
+		}
 	};
 
 	useEffect(() => {
@@ -77,7 +87,22 @@ function Cities() {
 			await getData();
 			reset();
 			onClose();
-		} catch (error) {}
+			toast({
+				title: "Успех!",
+				description: "Город успешно создан",
+				duration: 3000,
+				isClosable: true,
+				status: "success",
+			});
+		} catch (error) {
+			toast({
+				title: "Ошибка!",
+				description: `${error}`,
+				duration: 3000,
+				isClosable: true,
+				status: "error",
+			});
+		}
 	});
 
 	return data !== null ? (
@@ -150,6 +175,7 @@ export function TableItem({
 	} = useForm<City>({
 		defaultValues: item,
 	});
+	const toast = useToast();
 	const onSubmit = handleSubmit(async data => {
 		try {
 			await axios.post(
@@ -167,7 +193,22 @@ export function TableItem({
 			await getData();
 			reset();
 			onClose();
-		} catch (error) {}
+			toast({
+				title: "Успех!",
+				description: "Город успешно изменен",
+				duration: 3000,
+				isClosable: true,
+				status: "success",
+			});
+		} catch (error) {
+			toast({
+				title: "Ошибка!",
+				description: `${error}`,
+				duration: 3000,
+				isClosable: true,
+				status: "error",
+			});
+		}
 	});
 
 	return (
